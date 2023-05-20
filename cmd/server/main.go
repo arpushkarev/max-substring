@@ -6,7 +6,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/arpushkarev/max-substring/internal/app"
+	"github.com/arpushkarev/max-substring/internal/cli"
+	"github.com/arpushkarev/max-substring/internal/server/app"
 )
 
 var pathConfig string
@@ -22,6 +23,11 @@ func main() {
 	ctx := context.Background()
 
 	a, err := app.NewApp(ctx, pathConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c, err := cli.NewCli()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +48,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 
-		a.ResponseWriter()
+		c.ResponseWriter()
 	}()
 
 	wg.Wait()
