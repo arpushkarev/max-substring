@@ -6,25 +6,19 @@ import (
 	"strconv"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func Substring(w http.ResponseWriter, r *http.Request) {
 	str := r.URL.Query().Get("str")
 
-	fmt.Println(str)
-	//list := strings.Split(url, "-")
-
-	//str := list[1]
-
 	bestLen := 0
-
 	letters := map[string]int{}
 	start := 0
-	for i := 0; ; i++ {
+	var firstLetter, lastLetter int
+
+	for i := 0; i < len(str); i++ {
 		if i-start > bestLen {
 			bestLen = i - start
-		}
-
-		if i >= len(str) {
-			break
+			firstLetter = start
+			lastLetter = start + (bestLen)
 		}
 
 		c := string(str[i])
@@ -32,10 +26,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			start = idx + 1
 		}
 		letters[c] = i
+
 	}
+
+	substring := str[firstLetter:lastLetter]
 
 	res := strconv.Itoa(bestLen)
 
-	fmt.Fprintf(w, res)
+	fmt.Fprintf(w, "Max len:%s, String:%s", res, substring)
 
 }
