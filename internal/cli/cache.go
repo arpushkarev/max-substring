@@ -3,7 +3,6 @@ package cli
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 )
@@ -23,22 +22,21 @@ func NewCache() (*Cache, error) {
 	}
 
 	input = strings.TrimRight(input, "\n \r")
-	list := strings.Split(input, " ")
+	list := strings.Fields(input)
+
 	if len(list) != 2 {
-		log.Fatalf("Incorrect input data")
+		return nil, err
 	}
 
-	//list[0], list[1] = list[1], list[0]
-	//url := strings.Join(list, "-")
 	reqUrl := list[1]
 	str := list[0]
 
-	if reqUrl != "/api/substring" {
-		log.Println("Incorrect URL")
+	if reqUrl != "api/substring" {
+		return nil, err
 	}
 
 	url := fmt.Sprintf("%s/?str=%s", reqUrl, str)
-	fmt.Println(url)
+
 	return &Cache{
 		url: url,
 	}, nil

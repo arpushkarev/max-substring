@@ -10,12 +10,11 @@ import (
 
 	"github.com/arpushkarev/max-substring/internal/cli"
 	"github.com/arpushkarev/max-substring/internal/config"
-	"github.com/arpushkarev/max-substring/internal/routs"
+	"github.com/arpushkarev/max-substring/internal/routes"
 )
 
 type App struct {
-	Config *config.Config
-	ctx    context.Context
+	config *config.Config
 	cache  *cli.Cache
 }
 
@@ -28,8 +27,7 @@ func NewApp(ctx context.Context, path string) (*App, error) {
 	cache, err := cli.NewCache()
 
 	return &App{
-		Config: cfg,
-		ctx:    ctx,
+		config: cfg,
 		cache:  cache,
 	}, nil
 }
@@ -37,8 +35,8 @@ func NewApp(ctx context.Context, path string) (*App, error) {
 func (a *App) Run() error {
 
 	server := http.Server{
-		Addr:    a.Config.GetHTTPAddress(),
-		Handler: routs.Route(a.cache.GetURL()),
+		Addr:    a.config.GetHTTPAddress(),
+		Handler: routes.Route(),
 	}
 
 	err := server.ListenAndServe()
@@ -68,9 +66,8 @@ func (a *App) ResponseWriter() {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalf("Failed to read the response body: %v", err)
-		return
 	}
 
-	fmt.Printf("The max substring len: %s", string(body))
+	fmt.Println(string(body))
 
 }
