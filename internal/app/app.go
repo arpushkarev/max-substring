@@ -38,7 +38,7 @@ func (a *App) Run() error {
 
 	server := http.Server{
 		Addr:    a.Config.GetHTTPAddress(),
-		Handler: routs.Route(a.cache.URL),
+		Handler: routs.Route(a.cache.GetURL()),
 	}
 
 	err := server.ListenAndServe()
@@ -51,10 +51,10 @@ func (a *App) Run() error {
 
 func (a *App) ResponseWriter() {
 
-	url := a.cache.URL
+	url := a.cache.GetURL()
 
-	if !strings.HasPrefix(a.cache.URL, "http://localhost:8090/") && !strings.HasPrefix(a.cache.URL, "https://localhost:8090/") {
-		url = "http://localhost:8090/" + a.cache.URL
+	if !strings.HasPrefix(url, "http://localhost:8090/") && !strings.HasPrefix(url, "https://localhost:8090/") {
+		url = "http://localhost:8090/" + url
 	}
 
 	client := &http.Client{}

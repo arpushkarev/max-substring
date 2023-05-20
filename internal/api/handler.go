@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
-func Substring(w http.ResponseWriter, r *http.Request) {
-	url := r.URL.String()
+func Handler(w http.ResponseWriter, r *http.Request) {
+	str := r.URL.Query().Get("str")
 
-	list := strings.Split(url, "-")
+	fmt.Println(str)
+	//list := strings.Split(url, "-")
 
-	str := list[1]
+	//str := list[1]
 
 	bestLen := 0
 

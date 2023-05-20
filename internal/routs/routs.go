@@ -1,6 +1,7 @@
 package routs
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/arpushkarev/max-substring/internal/api"
@@ -10,7 +11,8 @@ import (
 func Route(url string) http.Handler {
 	mux := chi.NewRouter()
 
-	mux.Get("/"+url, api.Substring)
+	mux.Get("/api/substring", api.Handler)
+	fmt.Println(url)
 
 	return mux
 }
