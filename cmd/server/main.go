@@ -4,9 +4,8 @@ import (
 	"context"
 	"flag"
 	"log"
-	"sync"
 
-	"github.com/arpushkarev/max-substring/internal/app"
+	"github.com/arpushkarev/max-substring/internal/server/app"
 )
 
 var pathConfig string
@@ -26,24 +25,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	wg := sync.WaitGroup{}
-
-	wg.Add(2)
-
-	go func() {
-		defer wg.Done()
-
-		err = a.Run()
-		if err != nil {
-			log.Fatalf("failed to run app %s", err.Error())
-		}
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		a.ResponseWriter()
-	}()
-
-	wg.Wait()
+	err = a.Run()
+	if err != nil {
+		log.Fatalf("failed to run app %s", err.Error())
+	}
 }

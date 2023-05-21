@@ -2,46 +2,44 @@ package cli
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
 )
 
-type Cache struct {
-	url string
-}
-
-func NewCache() (*Cache, error) {
-
-	fmt.Println("Введите запрос:")
+func (c *cli) GetURL() error {
+	fmt.Println("(чтобы остановить приложение введите \"stop\") \n Введите запрос:")
 
 	buffer := bufio.NewReader(os.Stdin)
 	input, err := buffer.ReadString('\n')
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	input = strings.TrimRight(input, "\n \r")
+
+	if input == "stop" {
+		err = errors.New("приложение остановлено пользователем")
+		return err
+	}
+
 	list := strings.Fields(input)
 
 	if len(list) != 2 {
-		return nil, err
+		return err
 	}
 
 	reqUrl := list[1]
 	str := list[0]
 
 	if reqUrl != "api/substring" {
-		return nil, err
+		return err
 	}
 
 	url := fmt.Sprintf("%s/?str=%s", reqUrl, str)
 
-	return &Cache{
-		url: url,
-	}, nil
-}
+	c.url = url
 
-func (c *Cache) GetURL() string {
-	return c.url
+	return nil
 }

@@ -1,9 +1,9 @@
-package routes
+package app
 
 import (
 	"net/http"
 
-	"github.com/arpushkarev/max-substring/internal/api"
+	"github.com/arpushkarev/max-substring/internal/server/api"
 )
 
 func Route() http.Handler {

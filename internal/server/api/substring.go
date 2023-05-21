@@ -31,6 +31,11 @@ func Substring(w http.ResponseWriter, r *http.Request) {
 
 	substring := str[firstLetter:lastLetter]
 
+	if (lastLetter - firstLetter) == (len(str) - 1) {
+		substring = str[firstLetter:]
+		bestLen += 1
+	}
+
 	res := strconv.Itoa(bestLen)
 
 	fmt.Fprintf(w, "Max len:%s, String:%s", res, substring)
