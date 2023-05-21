@@ -4,19 +4,16 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io"
-	"log"
-	"net/http"
 	"os"
 	"strings"
 )
 
-type Cli struct {
-	URL string
+type cli struct {
+	url string
 }
 
-func NewCli() (*Cli, error) {
-	fmt.Println("(чтобы остановить приложение введите \"stop\" \n Введите запрос:")
+func NewCli() (*cli, error) {
+	fmt.Println("(чтобы остановить приложение введите \"stop\") \n Введите запрос:")
 
 	buffer := bufio.NewReader(os.Stdin)
 	input, err := buffer.ReadString('\n')
@@ -46,32 +43,7 @@ func NewCli() (*Cli, error) {
 
 	url := fmt.Sprintf("%s/?str=%s", reqUrl, str)
 
-	return &Cli{
-		URL: url,
+	return &cli{
+		url: url,
 	}, nil
-}
-
-func (c *Cli) ResponseWriter() {
-
-	url := c.URL
-
-	if !strings.HasPrefix(c.URL, "http://localhost:8090/") && !strings.HasPrefix(c.URL, "https://localhost:8090/") {
-		url = "http://localhost:8090/" + c.URL
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Get(url)
-	if err != nil {
-		log.Fatalf("Failed to make the HTTP request: %v", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalf("Failed to read the response body: %v", err)
-	}
-
-	fmt.Println(string(body))
-
 }

@@ -14,6 +14,9 @@ func main() {
 			log.Fatal(err)
 		}
 
-		c.ResponseWriter()
+		err = c.ResponseWriter()
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
