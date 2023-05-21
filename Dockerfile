@@ -1,5 +1,5 @@
-FROM golang:1.20
+FROM golang:1.20-alpine
 WORKDIR /app
-COPY go.mod go.sum ./
-COPY go_build_main_go ./
+COPY ./ /app
 EXPOSE 8090
+CMD ["./server"]

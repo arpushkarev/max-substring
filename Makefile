@@ -9,3 +9,4 @@ run-cli:
 .PHONY: install-go-deps
 install-go-deps:
 	ls go.mod || go mod init
+	go get github.com/stretchr/testify/assert
