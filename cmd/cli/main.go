@@ -8,8 +8,13 @@ import (
 
 func main() {
 
+	c, err := cli.NewCli()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for {
-		c, err := cli.NewCli()
+		err = c.GetURL()
 		if err != nil {
 			log.Fatal(err)
 		}
