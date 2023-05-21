@@ -4,9 +4,7 @@ import (
 	"context"
 	"flag"
 	"log"
-	"sync"
 
-	"github.com/arpushkarev/max-substring/internal/cli"
 	"github.com/arpushkarev/max-substring/internal/server/app"
 )
 
@@ -27,29 +25,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	c, err := cli.NewCli()
+	err = a.Run()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to run app %s", err.Error())
 	}
-
-	wg := sync.WaitGroup{}
-
-	wg.Add(2)
-
-	go func() {
-		defer wg.Done()
-
-		err = a.Run()
-		if err != nil {
-			log.Fatalf("failed to run app %s", err.Error())
-		}
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		c.ResponseWriter()
-	}()
-
-	wg.Wait()
 }

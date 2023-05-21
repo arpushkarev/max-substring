@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -15,7 +16,7 @@ type Cli struct {
 }
 
 func NewCli() (*Cli, error) {
-	fmt.Println("Введите запрос:")
+	fmt.Println("(чтобы остановить приложение введите \"stop\" \n Введите запрос:")
 
 	buffer := bufio.NewReader(os.Stdin)
 	input, err := buffer.ReadString('\n')
@@ -24,6 +25,12 @@ func NewCli() (*Cli, error) {
 	}
 
 	input = strings.TrimRight(input, "\n \r")
+
+	if input == "stop" {
+		err = errors.New("приложение остановлено пользователем")
+		return nil, err
+	}
+
 	list := strings.Fields(input)
 
 	if len(list) != 2 {
